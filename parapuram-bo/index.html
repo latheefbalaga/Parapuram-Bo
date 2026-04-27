@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Parapuram BO</title>
+  <meta name="description" content="Parapuram Branch Office Daily Register" />
+  <meta name="theme-color" content="#0d1b2a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Parapuram BO" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1b2a;
+      --bg2: #1a2a3a;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --green: #4caf82;
+      --red: #e06c6c;
+      --blue: #7ab3d4;
+      --text: #fff;
+      --muted: #aaa;
+      --dim: #666;
+    }
+
+    html, body {
+      height: 100%; width: 100%;
+      background: var(--bg);
+      font-family: 'Nunito', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #0d1b2a 0%, #1a2a3a 60%, #0a1520 100%);
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #0e2a42 100%);
+      padding: 48px 18px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .header-sub { font-size: 11px; color: var(--blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .header-title { font-size: 22px; font-weight: 900; color: #fff; }
+    .header-date { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+    .header-date label { font-size: 12px; color: var(--blue); }
+    .header-date input[type=date] {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; color: #fff; font-size: 12px; padding: 5px 10px;
+      font-family: inherit; outline: none;
+    }
+
+    /* SUMMARY CARDS */
+    .summary-row {
+      display: flex; gap: 10px; padding: 14px 14px 0;
+    }
+    .summary-card {
+      flex: 1; border-radius: 14px; padding: 12px;
+    }
+    .summary-card.dep { background: rgba(76,175,130,0.12); border: 1px solid rgba(76,175,130,0.3); }
+    .summary-card.with { background: rgba(224,108,108,0.12); border: 1px solid rgba(224,108,108,0.3); }
+    .summary-card .s-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .summary-card.dep .s-label { color: var(--green); }
+    .summary-card.with .s-label { color: var(--red); }
+    .summary-card .s-value { font-size: 17px; font-weight: 900; color: #fff; }
+
+    /* SECTION */
+    .section {
+      margin: 12px 14px 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid;
+    }
+    .section.dep { border-color: rgba(76,175,130,0.25); }
+    .section.with { border-color: rgba(224,108,108,0.25); }
+    .section-head {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 14px 10px;
+      border-bottom: 2px solid;
+      background: var(--card);
+    }
+    .section.dep .section-head { border-color: var(--green); }
+    .section.with .section-head { border-color: var(--red); }
+    .section-head .icon { font-size: 18px; }
+    .section-head .title { font-weight: 800; font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; }
+    .section.dep .title { color: var(--green); }
+    .section.with .title { color: var(--red); }
+
+    /* ROW */
+    .row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      background: var(--card);
+    }
+    .row:last-of-type { border-bottom: none; }
+    .row .lbl { font-size: 13px; color: #ccc; font-weight: 600; }
+    .row input {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px; color: #fff;
+      font-size: 14px; font-weight: 700;
+      padding: 6px 10px; width: 115px;
+      text-align: right; outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .row input:focus { border-color: rgba(255,255,255,0.4); }
+    .section.dep .row input { color: #a8e6c2; }
+    .section.with .row input { color: #f4a5a5; }
+
+    /* TOTAL ROW */
+    .total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 14px;
+      border-top: 1px solid;
+    }
+    .section.dep .total-row { background: rgba(76,175,130,0.12); border-color: rgba(76,175,130,0.3); }
+    .section.with .total-row { background: rgba(224,108,108,0.12); border-color: rgba(224,108,108,0.3); }
+    .total-row .t-lbl { font-weight: 800; font-size: 13px; }
+    .section.dep .total-row .t-lbl { color: var(--green); }
+    .section.with .total-row .t-lbl { color: var(--red); }
+    .total-row .t-val { font-weight: 900; font-size: 15px; }
+    .section.dep .total-row .t-val { color: var(--green); }
+    .section.with .total-row .t-val { color: var(--red); }
+
+    /* CLOSING BALANCE */
+    .closing {
+      margin: 12px 14px 0;
+      border-radius: 18px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(110,240,160,0.12) 0%, rgba(30,80,120,0.3) 100%);
+      border: 1.5px solid rgba(110,240,160,0.25);
+      text-align: center;
+    }
+    .closing .c-label { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+    .closing .c-value { font-size: 34px; font-weight: 900; }
+    .closing .c-value.positive { color: #6ef0a0; }
+    .closing .c-value.negative { color: #ff6b6b; }
+    .closing .c-sub { font-size: 11px; color: var(--dim); margin-top: 4px; }
+
+    /* SAVE BUTTON */
+    .save-btn {
+      display: block; width: calc(100% - 28px);
+      margin: 14px 14px 0;
+      padding: 15px;
+      border-radius: 14px;
+      border: none; cursor: pointer;
+      background: linear-gradient(135deg, #4caf82, #2d8a5e);
+      color: #fff; font-size: 15px; font-weight: 800;
+      letter-spacing: 0.5px; font-family: inherit;
+      box-shadow: 0 4px 18px rgba(76,175,130,0.4);
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .save-btn:active { opacity: 0.85; transform: scale(0.98); }
+
+    /* HISTORY */
+    .history-section {
+      margin: 14px 14px 0;
+    }
+    .history-title {
+      font-size: 12px; font-weight: 800; color: var(--blue);
+      letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .history-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .history-item .h-date { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .history-item .h-bal { font-size: 15px; font-weight: 900; color: #6ef0a0; }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      margin: 16px 14px 24px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      display: flex; justify-content: space-around;
+      padding: 12px 0;
+      border: 1px solid var(--border);
+    }
+    .nav-item { text-align: center; cursor: pointer; }
+    .nav-item .n-icon { font-size: 20px; }
+    .nav-item .n-label { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: #4caf82; color: #fff;
+      padding: 10px 22px; border-radius: 50px;
+      font-size: 13px; font-weight: 700;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 999; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+
+    /* TAB VIEWS */
+    .view { display: none; }
+    .view.active { display: block; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-sub">Post Office · Daily Register</div>
+  <div class="header-title">PARAPURAM BO</div>
+  <div class="header-date">
+    <label>Date:</label>
+    <input type="date" id="dateInput" />
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="summary-row">
+  <div class="summary-card dep">
+    <div class="s-label">⬆ Total Deposits</div>
+    <div class="s-value" id="sumDep">₹0</div>
+  </div>
+  <div class="summary-card with">
+    <div class="s-label">⬇ Total Withdrawals</div>
+    <div class="s-value" id="sumWith">₹0</div>
+  </div>
+</div>
+
+<!-- Home View -->
+<div id="view-home" class="view active">
+
+  <!-- DEPOSITS -->
+  <div class="section dep">
+    <div class="section-head">
+      <span class="icon">💰</span>
+      <span class="title">Deposits</span>
+    </div>
+    <div class="row"><span class="lbl">OB</span><input type="number" id="d_OB" value="10207" min="0" /></div>
+    <div class="row"><span class="lbl">RD</span><input type="number" id="d_RD" value="16500" min="0" /></div>
+    <div class="row"><span class="lbl">SB</span><input type="number" id="d_SB" value="4000" min="0" /></div>
+    <div class="row"><span class="lbl">SSA</span><input type="number" id="d_SSA" value="1000" min="0" /></div>
+    <div class="row"><span class="lbl">RPLI</span><input type="number" id="d_RPLI" value="5915" min="0" /></div>
+    <div class="row"><span class="lbl">VPP/COD</span><input type="number" id="d_VPP" value="0" min="0" /></div>
+    <div class="row"><span class="lbl">TD</span><input type="number" id="d_TD" value="0" min="0" /></div>
+    <div class="row"><span class="lbl">RD Default Fee</span><input type="number" id="d_RDF" value="340" min="0" /></div>
+    <div class="row"><span class="lbl">Cash from SO</span><input type="number" id="d_CFSO" value="0" min="0" /></div>
+    <div class="total-row">
+      <span class="t-lbl">TOTAL</span>
+      <span class="t-val" id="totalDep">₹0</span>
+    </div>
+  </div>
+
+  <!-- WITHDRAWALS -->
+  <div class="section with">
+    <div class="section-head">
+      <span class="icon">💸</span>
+      <span class="title">Withdrawals</span>
+    </div>
+    <div class="row"><span class="lbl">SB</span><input type="number" id="w_SB" value="3100" min="0" /></div>
+    <div class="row"><span class="lbl">Cash to SO</span><input type="number" id="w_CTSO" value="0" min="0" /></div>
+    <div class="row"><span class="lbl">Rebate</span><input type="number" id="w_REB" value="0" min="0" /></div>
+    <div class="total-row">
+      <span class="t-lbl">TOTAL</span>
+      <span class="t-val" id="totalWith">₹0</span>
+    </div>
+  </div>
+
+  <!-- Closing Balance -->
+  <div class="closing">
+    <div class="c-label">Closing Balance</div>
+    <div class="c-value positive" id="closingBal">₹0</div>
+    <div class="c-sub" id="closingSub"></div>
+  </div>
+
+  <!-- Save Button -->
+  <button class="save-btn" onclick="saveEntry()">💾 Save Today's Entry</button>
+</div>
+
+<!-- History View -->
+<div id="view-history" class="view">
+  <div class="history-section">
+    <div class="history-title">📋 Saved Entries</div>
+    <div id="historyList"><p style="color:#666;font-size:13px;padding:10px 0">No entries saved yet.</p></div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <div class="nav-item" onclick="showView('home')">
+    <div class="n-icon">🏠</div><div class="n-label">Home</div>
+  </div>
+  <div class="nav-item" onclick="showView('history')">
+    <div class="n-icon">📋</div><div class="n-label">History</div>
+  </div>
+  <div class="nav-item" onclick="clearAll()">
+    <div class="n-icon">🔄</div><div class="n-label">Reset</div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Entry Saved!</div>
+
+<script>
+  // Set today's date
+  const dateInput = document.getElementById('dateInput');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.value = today;
+
+  const depIds = ['d_OB','d_RD','d_SB','d_SSA','d_RPLI','d_VPP','d_TD','d_RDF','d_CFSO'];
+  const withIds = ['w_SB','w_CTSO','w_REB'];
+
+  function fmt(n) {
+    return '₹' + n.toLocaleString('en-IN');
+  }
+
+  function calc() {
+    const totalDep = depIds.reduce((s, id) => s + (parseFloat(document.getElementById(id).value) || 0), 0);
+    const totalWith = withIds.reduce((s, id) => s + (parseFloat(document.getElementById(id).value) || 0), 0);
+    const closing = totalDep - totalWith;
+
+    document.getElementById('totalDep').textContent = fmt(totalDep);
+    document.getElementById('totalWith').textContent = fmt(totalWith);
+    document.getElementById('sumDep').textContent = fmt(totalDep);
+    document.getElementById('sumWith').textContent = fmt(totalWith);
+
+    const balEl = document.getElementById('closingBal');
+    balEl.textContent = fmt(closing);
+    balEl.className = 'c-value ' + (closing >= 0 ? 'positive' : 'negative');
+    document.getElementById('closingSub').textContent =
+      totalDep.toLocaleString('en-IN') + ' − ' + totalWith.toLocaleString('en-IN');
+  }
+
+  // Attach listeners
+  [...depIds, ...withIds].forEach(id => {
+    document.getElementById(id).addEventListener('input', calc);
+  });
+
+  calc();
+
+  function saveEntry() {
+    const totalDep = depIds.reduce((s, id) => s + (parseFloat(document.getElementById(id).value) || 0), 0);
+    const totalWith = withIds.reduce((s, id) => s + (parseFloat(document.getElementById(id).value) || 0), 0);
+    const closing = totalDep - totalWith;
+    const date = dateInput.value;
+
+    const entry = { date, totalDep, totalWith, closing,
+      deposits: Object.fromEntries(depIds.map(id => [id, document.getElementById(id).value])),
+      withdrawals: Object.fromEntries(withIds.map(id => [id, document.getElementById(id).value]))
+    };
+
+    const history = JSON.parse(localStorage.getItem('bo_history') || '[]');
+    history.unshift(entry);
+    localStorage.setItem('bo_history', JSON.stringify(history.slice(0, 60)));
+
+    showToast('✅ Entry Saved!');
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('bo_history') || '[]');
+    const container = document.getElementById('historyList');
+    if (!history.length) {
+      container.innerHTML = '<p style="color:#666;font-size:13px;padding:10px 0">No entries saved yet.</p>';
+      return;
+    }
+    container.innerHTML = history.map(e => `
+      <div class="history-item" onclick="loadEntry('${e.date}')">
+        <div>
+          <div class="h-date">📅 ${e.date}</div>
+          <div style="font-size:11px;color:#888;margin-top:2px">
+            Dep: ₹${e.totalDep.toLocaleString('en-IN')} &nbsp;|&nbsp; With: ₹${e.totalWith.toLocaleString('en-IN')}
+          </div>
+        </div>
+        <div class="h-bal">₹${e.closing.toLocaleString('en-IN')}</div>
+      </div>
+    `).join('');
+  }
+
+  function loadEntry(date) {
+    const history = JSON.parse(localStorage.getItem('bo_history') || '[]');
+    const entry = history.find(e => e.date === date);
+    if (!entry) return;
+    dateInput.value = entry.date;
+    depIds.forEach(id => { document.getElementById(id).value = entry.deposits[id] || 0; });
+    withIds.forEach(id => { document.getElementById(id).value = entry.withdrawals[id] || 0; });
+    calc();
+    showView('home');
+  }
+
+  function clearAll() {
+    if (!confirm('Reset all fields to zero?')) return;
+    depIds.forEach(id => document.getElementById(id).value = 0);
+    withIds.forEach(id => document.getElementById(id).value = 0);
+    calc();
+    showToast('🔄 Fields Reset');
+  }
+
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    if (name === 'history') renderHistory();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(console.error);
+  }
+</script>
+</body>
+</html>
