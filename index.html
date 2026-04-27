@@ -205,6 +205,47 @@
     }
     .toast.show { opacity: 1; }
 
+    /* SIDE BY SIDE LAYOUT */
+    .two-col {
+      display: flex;
+      gap: 8px;
+      padding: 12px 14px 0;
+      align-items: flex-start;
+    }
+    .two-col .section {
+      flex: 1;
+      margin: 0;
+      min-width: 0;
+    }
+    .two-col .section-head {
+      padding: 10px 8px 8px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+    .two-col .section-head .icon { font-size: 15px; }
+    .two-col .section-head .title { font-size: 11px; letter-spacing: 0.8px; }
+    .two-col .row {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 7px 8px;
+      gap: 3px;
+    }
+    .two-col .row .lbl { font-size: 11px; color: #bbb; }
+    .two-col .row input {
+      width: 100%;
+      font-size: 13px;
+      padding: 5px 8px;
+    }
+    .two-col .total-row {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 8px;
+      gap: 2px;
+    }
+    .two-col .total-row .t-lbl { font-size: 11px; }
+    .two-col .total-row .t-val { font-size: 13px; }
+
     /* TAB VIEWS */
     .view { display: none; }
     .view.active { display: block; }
@@ -236,40 +277,45 @@
 <!-- Home View -->
 <div id="view-home" class="view active">
 
-  <!-- DEPOSITS -->
-  <div class="section dep">
-    <div class="section-head">
-      <span class="icon">💰</span>
-      <span class="title">Deposits</span>
-    </div>
-    <div class="row"><span class="lbl">OB</span><input type="number" id="d_OB" value="10207" min="0" /></div>
-    <div class="row"><span class="lbl">RD</span><input type="number" id="d_RD" value="16500" min="0" /></div>
-    <div class="row"><span class="lbl">SB</span><input type="number" id="d_SB" value="4000" min="0" /></div>
-    <div class="row"><span class="lbl">SSA</span><input type="number" id="d_SSA" value="1000" min="0" /></div>
-    <div class="row"><span class="lbl">RPLI</span><input type="number" id="d_RPLI" value="5915" min="0" /></div>
-    <div class="row"><span class="lbl">VPP/COD</span><input type="number" id="d_VPP" value="0" min="0" /></div>
-    <div class="row"><span class="lbl">TD</span><input type="number" id="d_TD" value="0" min="0" /></div>
-    <div class="row"><span class="lbl">RD Default Fee</span><input type="number" id="d_RDF" value="340" min="0" /></div>
-    <div class="row"><span class="lbl">Cash from SO</span><input type="number" id="d_CFSO" value="0" min="0" /></div>
-    <div class="total-row">
-      <span class="t-lbl">TOTAL</span>
-      <span class="t-val" id="totalDep">₹0</span>
-    </div>
-  </div>
+  <!-- DEPOSITS LEFT | WITHDRAWALS RIGHT -->
+  <div class="two-col">
 
-  <!-- WITHDRAWALS -->
-  <div class="section with">
-    <div class="section-head">
-      <span class="icon">💸</span>
-      <span class="title">Withdrawals</span>
+    <!-- LEFT: DEPOSITS -->
+    <div class="section dep">
+      <div class="section-head">
+        <span class="icon">💰</span>
+        <span class="title">Deposits</span>
+      </div>
+      <div class="row"><span class="lbl">OB</span><input type="number" id="d_OB" value="10207" min="0" /></div>
+      <div class="row"><span class="lbl">RD</span><input type="number" id="d_RD" value="16500" min="0" /></div>
+      <div class="row"><span class="lbl">SB</span><input type="number" id="d_SB" value="4000" min="0" /></div>
+      <div class="row"><span class="lbl">SSA</span><input type="number" id="d_SSA" value="1000" min="0" /></div>
+      <div class="row"><span class="lbl">RPLI</span><input type="number" id="d_RPLI" value="5915" min="0" /></div>
+      <div class="row"><span class="lbl">VPP/COD</span><input type="number" id="d_VPP" value="0" min="0" /></div>
+      <div class="row"><span class="lbl">TD</span><input type="number" id="d_TD" value="0" min="0" /></div>
+      <div class="row"><span class="lbl">RD Default Fee</span><input type="number" id="d_RDF" value="340" min="0" /></div>
+      <div class="row"><span class="lbl">Cash from SO</span><input type="number" id="d_CFSO" value="0" min="0" /></div>
+      <div class="total-row">
+        <span class="t-lbl">TOTAL</span>
+        <span class="t-val" id="totalDep">₹0</span>
+      </div>
     </div>
-    <div class="row"><span class="lbl">SB</span><input type="number" id="w_SB" value="3100" min="0" /></div>
-    <div class="row"><span class="lbl">Cash to SO</span><input type="number" id="w_CTSO" value="0" min="0" /></div>
-    <div class="row"><span class="lbl">Rebate</span><input type="number" id="w_REB" value="0" min="0" /></div>
-    <div class="total-row">
-      <span class="t-lbl">TOTAL</span>
-      <span class="t-val" id="totalWith">₹0</span>
+
+    <!-- RIGHT: WITHDRAWALS -->
+    <div class="section with">
+      <div class="section-head">
+        <span class="icon">💸</span>
+        <span class="title">Withdrawals</span>
+      </div>
+      <div class="row"><span class="lbl">SB</span><input type="number" id="w_SB" value="3100" min="0" /></div>
+      <div class="row"><span class="lbl">Cash to SO</span><input type="number" id="w_CTSO" value="0" min="0" /></div>
+      <div class="row"><span class="lbl">Rebate</span><input type="number" id="w_REB" value="0" min="0" /></div>
+      <div class="total-row">
+        <span class="t-lbl">TOTAL</span>
+        <span class="t-val" id="totalWith">₹0</span>
+      </div>
     </div>
+
   </div>
 
   <!-- Closing Balance -->
